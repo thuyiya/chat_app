@@ -71,7 +71,12 @@ const typeDefs = `#graphql
 const resolvers = {
     Query: {
         users: () => users,
-        user: (_, { id }) => users.find(item => item.id == id) 
+        user: (_, { id }, { authScope }) => {
+            
+            if (!authScope.isLoggedInUser) throw new Error("Your are not logged in")
+
+            return users.find(item => item.id == id) 
+        }
     },
     User: {
         todos: ({ id }) => {
@@ -92,15 +97,26 @@ const resolvers = {
     }
 };
 
-const server = new ApolloServer({
+interface AppContext {
+    authScope?: String;
+}
+
+
+const server = new ApolloServer<AppContext>({
     typeDefs,
-    resolvers,
+    resolvers
 });
 
 (async () => {
     const { url } = await startStandaloneServer(server, {
         listen: { port: PORT },
+        context: async ({ req, res }) => ({
+            authScope: {
+                isLoggedInUser: true
+            },
+        }),
     });
+
 
     console.log(`🚀  Server ready at: ${url}`);
 })()
