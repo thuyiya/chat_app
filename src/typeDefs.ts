@@ -17,6 +17,10 @@ const typeDefs = `#graphql
         lastName: String
         email: String
     }
+
+    type Mutation {
+        signupUser(payload: UserInput!):User
+    }
 `;
 
 export default typeDefs

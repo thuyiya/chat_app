@@ -1,9 +1,10 @@
+import 'dotenv/config';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import typeDefs from './typeDefs';
 import resolvers from './resolvers';
 
-const PORT = 7777
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
 interface AppContext {
     authScope?: String;
