@@ -22,6 +22,21 @@ const users = [
     }
 ]
 
+const todos = [
+    {
+        "title": "Buy groceries",
+        "by": "1"
+    },
+    {
+        "title": "Finish project report",
+        "by": "2"
+    },
+    {
+        "title": "Schedule meeting with team",
+        "by": "1"
+    }
+]
+
 const typeDefs = `#graphql
     type Query {
         users: [User]
@@ -44,6 +59,12 @@ const typeDefs = `#graphql
         firstName: String
         lastName: String
         email: String
+        todos: [Todo]
+    }
+
+    type Todo {
+        title: String!
+        by: ID!
     }
 `;
 
@@ -51,6 +72,11 @@ const resolvers = {
     Query: {
         users: () => users,
         user: (_, { id }) => users.find(item => item.id == id) 
+    },
+    User: {
+        todos: ({ id }) => {
+            return todos.filter(todo => todo.by == id)
+        }
     },
     Mutation: {
         createUser: (_, { payload }) => {
