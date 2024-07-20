@@ -11,6 +11,11 @@ const typeDefs = `#graphql
         password: String!
     }
 
+    input UserSignInInput {
+        email: String!
+        password: String!
+    }
+
     type User {
         id: ID
         firstName: String
@@ -18,8 +23,13 @@ const typeDefs = `#graphql
         email: String
     }
 
+    type Token {
+        token: String!
+    }
+
     type Mutation {
         signupUser(payload: UserInput!):User
+        signInUser(payload: UserSignInInput!): Token
     }
 `;
 
