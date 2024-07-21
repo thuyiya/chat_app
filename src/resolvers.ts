@@ -1,14 +1,28 @@
 import { PrismaClient } from '@prisma/client'
 import { ApolloServerErrorCode } from '@apollo/server/errors';
 import { GraphQLError } from 'graphql';
-import bcrypt from 'bcrypt';
-import jwt, { JwtPayload, Secret, SignOptions } from 'jsonwebtoken'; 
+import bcrypt from 'bcrypt'; 
+import { generateToken } from './context';
 
 const prisma = new PrismaClient()
 
 const resolvers = {
     Query: {
+        users: async (_, args,  context) => {
+            if (!context.isUserLoggedIn) throw new GraphQLError('UNAUTHENTICATED Action', {
+                extensions: {
+                    code: 'UNAUTHENTICATED',
+                    http: { status: 401 },
+                },
+            });
 
+            const users = await prisma.user.findMany({ where: {
+                id: {
+                    not: context.token.userId
+                }
+            }})
+            return users
+        }
     },
 
     Mutation: {
@@ -58,11 +72,7 @@ const resolvers = {
             });
 
             //generate token
-            const options: SignOptions = {
-                expiresIn: '24h' // Token expiration time
-            };
-
-            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, options)
+            const token = generateToken({ userId: user.id })
 
             return { token }
         }
