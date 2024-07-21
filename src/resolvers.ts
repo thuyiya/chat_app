@@ -1,14 +1,14 @@
 import { PrismaClient } from '@prisma/client'
 import { ApolloServerErrorCode } from '@apollo/server/errors';
 import { GraphQLError } from 'graphql';
-import bcrypt from 'bcrypt'; 
+import bcrypt from 'bcrypt';
 import { generateToken } from './context';
 
 const prisma = new PrismaClient()
 
 const resolvers = {
     Query: {
-        users: async (_, args,  context) => {
+        users: async (_, args, context) => {
             if (!context.isUserLoggedIn) throw new GraphQLError('UNAUTHENTICATED Action', {
                 extensions: {
                     code: 'UNAUTHENTICATED',
@@ -16,11 +16,16 @@ const resolvers = {
                 },
             });
 
-            const users = await prisma.user.findMany({ where: {
-                id: {
-                    not: context.token.userId
+            const users = await prisma.user.findMany({
+                orderBy: {
+                    createdAt: "desc"
+                },
+                where: {
+                    id: {
+                        not: context.token.userId
+                    }
                 }
-            }})
+            })
             return users
         }
     },
