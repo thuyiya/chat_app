@@ -31,7 +31,7 @@ const resolvers = {
     },
 
     Mutation: {
-        signupUser: async (_, { payload }) => {
+        signUpUser: async (_, { payload }) => {
             const user = await prisma.user.findUnique({
                 where: { email: payload.email }
             })
@@ -80,6 +80,24 @@ const resolvers = {
             const token = generateToken({ userId: user.id })
 
             return { token }
+        },
+        createMessage: async (_, { receiverId, text }, context) => {
+            if (!context.isUserLoggedIn) throw new GraphQLError('UNAUTHENTICATED Action', {
+                extensions: {
+                    code: 'UNAUTHENTICATED',
+                    http: { status: 401 },
+                },
+            });
+
+            const message = await prisma.message.create({
+                data: {
+                    text,
+                    receiverId,
+                    senderId: context.token.userId
+                }
+            })
+
+            return message
         }
     }
 };
