@@ -1,0 +1,26 @@
+spectaql:
+  logoFile: ../assets/img/logo.png
+  faviconFile: ../assets/img/logo.png
+  logoUrl: "https://cdn-icons-png.flaticon.com/512/1041/1041916.png"
+  displayAllServers: true
+
+introspection:
+  url: "http://localhost:7777"
+  headers:
+    Authorization: "apikey SECRET_KEY"
+
+info:
+  title: Thuyiya - ChatApp GraphQL API
+  description:
+    "Thuyiya - ChatApp is an open-source API for chat application. Using GraphQL!
+
+    [View GraphiQL playground](http://localhost:7777)"
+  contact:
+    name: For Support
+    url: https://thuyiya_chatapp.com/docs
+    email: thuyiya4t@gmail.com
+
+servers:
+  - url: "http://localhost:7777"
+    description: Production
+    production: true

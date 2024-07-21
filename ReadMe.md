@@ -89,6 +89,9 @@ mutation {
 }
 ```
 
+### Generate your docs!
+- ```npx spectaql config/spectaql_api_doc_config.yml```
+
 ## License
 
 This project is licensed under the ISC License.

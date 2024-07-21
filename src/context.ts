@@ -33,15 +33,12 @@ const context = async ({ req, res }) => {
         const token = authorization
         try {
             const decodedToken: TokenPayload = await verifyToken(token);
-            console.log('Received token:', decodedToken);
-
             if (decodedToken) {
                 authScope.token = decodedToken;
                 authScope.isUserLoggedIn = true;
             }
         } catch (e) {
             console.error('Token verification failed:', e.message);
-            // Optionally, you could handle specific errors here or log them
         }
     }
 
