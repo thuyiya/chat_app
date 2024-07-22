@@ -8,8 +8,8 @@ const prisma = new PrismaClient()
 
 const resolvers = {
     Query: {
-        users: async (_, args, context) => {
-            if (!context.isUserLoggedIn) throw new GraphQLError('UNAUTHENTICATED Action', {
+        users: async (_, args, { isUserLoggedIn, token }) => {
+            if (!isUserLoggedIn) throw new GraphQLError('UNAUTHENTICATED Action', {
                 extensions: {
                     code: 'UNAUTHENTICATED',
                     http: { status: 401 },
@@ -22,16 +22,38 @@ const resolvers = {
                 },
                 where: {
                     id: {
-                        not: context.token.userId
+                        not: token.userId
                     }
                 }
             })
             return users
+        },
+        messagesByUser: async (_, { receiverId }, { isUserLoggedIn, token }) => {
+            if (!isUserLoggedIn) throw new GraphQLError('UNAUTHENTICATED Action', {
+                extensions: {
+                    code: 'UNAUTHENTICATED',
+                    http: { status: 401 },
+                },
+            });
+
+            const messages = await prisma.message.findMany({
+                where: {
+                    OR: [
+                        { senderId: token.userId, receiverId: receiverId },
+                        { senderId: receiverId, receiverId: token.userId }
+                    ]
+                },
+                orderBy: {
+                    createdAt: "asc"
+                }
+            })
+
+            return messages
         }
     },
 
     Mutation: {
-        signUpUser: async (_, { payload }) => {
+        signUpUser: async (_, { payload }, { isUserLoggedIn, token }) => {
             const user = await prisma.user.findUnique({
                 where: { email: payload.email }
             })
