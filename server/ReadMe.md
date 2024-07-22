@@ -1,4 +1,4 @@
-# Chat App
+# Chat App API
 
 This is a simple chat application built using Apollo GraphQL and TypeScript.
 
