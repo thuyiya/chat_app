@@ -1,0 +1,9 @@
+{
+  "cSpell.words": ["todos"],
+  "workbench.colorCustomizations": {
+    "titleBar.activeForeground": "#333333",
+    "titleBar.inactiveForeground": "#000000",
+    "titleBar.activeBackground": "#a9db12",
+    "titleBar.inactiveBackground": "#07dc9fcc"
+  }
+}
