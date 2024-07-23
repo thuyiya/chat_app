@@ -1,8 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import { FC } from "react";
 import { MessageProps } from "../types";
+import { formatDateToTime } from "../utils/common";
 
-const Message: FC<MessageProps> = ({ item: { text, date, direction } }) => {
+const MessageBubble: FC<MessageProps> = ({ item: { text, createdAt, direction } }) => {
     return (
         <Box
             display={'flex'}
@@ -17,10 +18,10 @@ const Message: FC<MessageProps> = ({ item: { text, date, direction } }) => {
                 >{text}</Typography>
                 <Typography
                     variant='caption'
-                >{date}</Typography>
+                >{formatDateToTime(createdAt)}</Typography>
             </Box>
         </Box>
     )
 }
 
-export default Message;
+export default MessageBubble;

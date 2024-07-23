@@ -8,6 +8,7 @@ export interface User {
 export interface Message {
     id: ID;
     text: string;
-    date: string;
+    receiverId: number;
+    createdAt: string;
     direction: 'start' | 'end'
 }
