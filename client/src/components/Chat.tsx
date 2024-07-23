@@ -77,7 +77,7 @@ const Chat = () => {
             height={'80vh'}
             padding={1}
             sx={{
-                overflowY: 'auto'
+                overflowY: 'auto',
             }}
         >
             {loading && <Typography variant="h6" >Loading...</Typography>}
@@ -88,7 +88,7 @@ const Chat = () => {
                     direction: item.receiverId == Number(id) ? 'end' : 'start'
                 }}
             />)}
-            <div style={{ height: 40}} ref={messagesEndRef} />
+            <div style={{ height: 50}} ref={messagesEndRef} />
         </Box>
         <Stack
             direction={'row'}
