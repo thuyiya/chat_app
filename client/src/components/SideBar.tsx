@@ -2,15 +2,19 @@ import { Box, Divider, IconButton, Stack, Typography } from "@mui/material"
 import UserCard from "./UserCard"
 import { SideBarProps, User } from "../types"
 import { LoginOutlined } from "@mui/icons-material"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { GET_ALL_USERS } from "../graphql/queries"
 import { useQuery } from "@apollo/client"
 
 const SideBar: FC<SideBarProps> = ({ setLoggedIn }) => {
 
-    const { loading, error, data } = useQuery(GET_ALL_USERS);
+    const { loading, error, data, refetch } = useQuery(GET_ALL_USERS);
     
     const users: User[] = data?.users || []
+
+    useEffect(() => {
+        refetch()
+    }, [])
 
     return (<Box
         bgcolor={'#f0f0f0'}
