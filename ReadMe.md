@@ -39,6 +39,21 @@ project-root/
 └── package.json
 ```
 
+## Project Docs
+
+### Backend
+
+1. [Work with backend](./server/ReadMe.md)
+2. [Database and connections](./server/docs/Databases.md)
+
+### Client  
+1. [Work with backend](./server/ReadMe.md)
+
+### FYI
+1. [Common Web Protocols](./docs/CommonWebProtocols.md)
+2. [Apollo Server Subscriptions](./docs/ApolloServerSubscriptions.md)
+2. [ReactJs App To Typescript Project](./docs/ReactJsAppToTypescriptProject.md)
+
 ## Getting Started
 
 ### Prerequisites
