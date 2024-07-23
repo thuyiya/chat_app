@@ -41,3 +41,7 @@ type Mutation {
   signInUser(payload: UserSignInInput!): Token
   createMessage(receiverId: Int!, text: String!):Message
 }
+
+type Subscription {
+  messageAdded: Message
+}

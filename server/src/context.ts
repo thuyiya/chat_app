@@ -4,9 +4,14 @@ interface TokenPayload {
     userId: number;
 }
 
+interface AppContext {
+    token: TokenPayload | null;
+    isUserLoggedIn: boolean;
+}
+
 export const generateToken = (payload: TokenPayload): string => {
     const options: SignOptions = {
-        expiresIn: '1h' // Token expiration time
+        expiresIn: '12h' // Token expiration time
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET_KEY, options);
@@ -21,7 +26,7 @@ const verifyToken = (token: string): TokenPayload => {
     }
 };
 
-const context = async ({ req, res }) => {
+const context = async ({ req }) => {
     const authorization = req.headers.authorization;
 
     const authScope = {
@@ -45,4 +50,29 @@ const context = async ({ req, res }) => {
     return authScope;
 };
 
-export default context
+const wsContext = async (ctx: { connectionParams: { authorization?: string } }) => {
+    const authorization = ctx.connectionParams?.authorization;
+
+    const authScope: AppContext = {
+        token: null,
+        isUserLoggedIn: false
+    };
+
+    if (authorization) {
+        const token = authorization;
+        try {
+            const decodedToken: TokenPayload = await verifyToken(token);
+            if (decodedToken) {
+                authScope.token = decodedToken;
+                authScope.isUserLoggedIn = true;
+            }
+        } catch (e) {
+            console.error('Token verification failed:', e.message);
+        }
+    }
+
+    return authScope;
+};
+
+
+export { context, wsContext }

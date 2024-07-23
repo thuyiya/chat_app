@@ -2,9 +2,14 @@ import { PrismaClient } from '@prisma/client'
 import { ApolloServerErrorCode } from '@apollo/server/errors';
 import { GraphQLError } from 'graphql';
 import bcrypt from 'bcrypt';
+import { PubSub } from 'graphql-subscriptions';
+
 import { generateToken } from './context';
+import { MESSAGE_ADDED } from './events';
 
 const prisma = new PrismaClient()
+
+const pubsub = new PubSub();
 
 const resolvers = {
     Query: {
@@ -51,7 +56,6 @@ const resolvers = {
             return messages
         }
     },
-
     Mutation: {
         signUpUser: async (_, { payload }, { isUserLoggedIn, token }) => {
             const user = await prisma.user.findUnique({
@@ -119,7 +123,14 @@ const resolvers = {
                 }
             })
 
+            pubsub.publish(MESSAGE_ADDED, { messageAdded: message }) //added to event
+
             return message
+        }
+    },
+    Subscription: {
+        messageAdded: {
+            subscribe: () => pubsub.asyncIterator([MESSAGE_ADDED])
         }
     }
 };

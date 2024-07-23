@@ -2,9 +2,9 @@ import 'dotenv/config';
 import 'graphql-import-node'; //to import with .graphql formatted file
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import schema from './schema.graphql';
+import typeDefs from './typeDefs.graphql';
 import resolvers from './resolvers';
-import context from './context';
+import { context } from './context';
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
@@ -14,7 +14,7 @@ interface AppContext {
 
 
 const server = new ApolloServer<AppContext>({
-    typeDefs: schema,
+    typeDefs,
     resolvers
 });
 
