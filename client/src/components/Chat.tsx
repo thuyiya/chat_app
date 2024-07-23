@@ -2,15 +2,50 @@ import { AppBar, Avatar, Box, TextField, Toolbar, Typography } from "@mui/materi
 import { grey } from "@mui/material/colors"
 import { useParams } from "react-router-dom"
 import Message from "./Message"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const Chat = () => {
     const { name } = useParams()
     const [messages, setMessages] = useState([])
 
-    const fetchAllMessages = () => {
-        
+    const fetchAllMessages = async () => {
+        try {
+            const response = await fetch('http://localhost:7777/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcyMTcxMzc1NiwiZXhwIjoxNzIxNzU2OTU2fQ.jHQ-0cvjfIKoFWZKsms4Qi-KB8HmeuB0bhmLgLXcIP8"
+                },
+                body: JSON.stringify({
+                    query: `
+                        query MessagesByUser($receiverId: Int!) {
+                            messages: messagesByUser(receiverId: $receiverId) {
+                                text
+                                senderId
+                                receiverId
+                                id
+                                createdAt
+                            }
+                        }
+                    `,
+                    variables: {
+                        receiverId: 3
+                    }
+                })
+            })
+
+            const { data } = await response.json()
+
+            setMessages(data.messages || []);
+            
+        } catch (error) {
+
+        }
     }
+
+    useEffect(() => {
+        fetchAllMessages()
+    }, [])
 
     return (<Box
         flexGrow={1}
@@ -40,9 +75,9 @@ const Chat = () => {
                 overflowY: 'auto'
             }}
         >
-            <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'start'}} />
-            <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'start'}} />
-            <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'end'}} />
+            <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'start' }} />
+            <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'start' }} />
+            <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'end' }} />
             <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'end' }} />
             <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'end' }} />
             <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'end' }} />
@@ -69,7 +104,7 @@ const Chat = () => {
             <Message item={{ id: 1, text: 'Hi bro', date: '11:00am', direction: 'end' }} />
 
         </Box>
-        <TextField 
+        <TextField
             placeholder="Type your message.."
             variant='standard'
             fullWidth
