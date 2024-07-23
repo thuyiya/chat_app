@@ -14,7 +14,7 @@ const App: React.FC<AppProps> = () => {
 
   return (
     <div className="App">
-      {loggedIn ? <Home /> : <Auth setLoggedIn={setLoggedIn}/>}
+      {loggedIn ? <Home setLoggedIn={setLoggedIn} /> : <Auth setLoggedIn={setLoggedIn}/>}
     </div>
   );
 };

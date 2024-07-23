@@ -9,3 +9,9 @@ export interface MessageProps {
 export interface AuthProps {
     setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
 }
+export interface HomeProps {
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+}
+export interface SideBarProps {
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+}

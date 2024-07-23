@@ -3,6 +3,8 @@ import SideBar from "../components/SideBar";
 import { Route, Routes } from 'react-router-dom'
 import Welcome from "./Welcome";
 import Chat from "../components/Chat";
+import { FC } from "react";
+import { HomeProps } from "../types";
 
 const AllRoutes = () => {
     return (<Routes>
@@ -11,11 +13,11 @@ const AllRoutes = () => {
     </Routes>)
 }
 
-const Home = () => {
+const Home: FC<HomeProps> = ({ setLoggedIn }) => {
     return (<Box
     display={'flex'}
     >
-        <SideBar />
+        <SideBar setLoggedIn={setLoggedIn} />
         <AllRoutes />
     </Box>)
 }
