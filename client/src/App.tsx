@@ -1,5 +1,9 @@
 // src/App.tsx
 import React from 'react';
+import Auth from './pages/Auth';
+import Home from './pages/Home';
+
+import './App.css'
 
 interface AppProps {
   // Define any props here
@@ -8,7 +12,8 @@ interface AppProps {
 const App: React.FC<AppProps> = () => {
   return (
     <div className="App">
-      <h1>Hello, TypeScript!</h1>
+      {/* <Auth /> */}
+      <Home />
     </div>
   );
 };
