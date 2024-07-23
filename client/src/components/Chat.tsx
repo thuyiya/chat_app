@@ -1,35 +1,43 @@
 import { AppBar, Avatar, Box, IconButton, Stack, TextField, Toolbar, Typography } from "@mui/material"
 import { grey } from "@mui/material/colors"
 import { useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { useMutation, useQuery } from "@apollo/client"
+import { useEffect, useRef, useState } from "react"
+import { useMutation, useQuery, useSubscription } from "@apollo/client"
 import SendIcon from '@mui/icons-material/Send';
 
 import MessageBubble from "./MessageBubble"
 import { GET_MESSAGES_BY_USER } from "../graphql/queries"
 import { Message } from "../types"
 import { CREATE_MESSAGE } from "../graphql/mutations"
+import { MESSAGE_SUB } from "../graphql/subscription"
 
 const Chat = () => {
     const { id, name } = useParams()
     const [text, setText] = useState("")
     const [messages, setMessages] = useState<Message[]>([])
+    const messagesEndRef = useRef<null | HTMLDivElement>(null)
 
-    const { data, loading, error } = useQuery(GET_MESSAGES_BY_USER, {
+    const { data: allMessageData, loading, error } = useQuery(GET_MESSAGES_BY_USER, {
         variables: {
             receiverId: Number(id)
         },
         onCompleted: (data) => {
             setMessages(data?.messages || [])
+            messagesEndRef?.current?.scrollIntoView({ behavior: 'smooth' });
         }
     })
-    const [createMessage] = useMutation(CREATE_MESSAGE, {
-        onCompleted(data) {
-            if (data.createMessage) {
+    const [createMessage] = useMutation(CREATE_MESSAGE)
+    
+    const {} = useSubscription(MESSAGE_SUB, {
+        onData({ data }: any) {
+            console.log("data ", data);
+            
+            if (data?.data?.newMessage) {
                 setMessages(prevState => ([
                     ...prevState,
-                    data.createMessage
-                ]))
+                data.data.newMessage
+                ]));
+                messagesEndRef?.current?.scrollIntoView({ behavior: 'smooth' });
             }
         }
     })
@@ -80,6 +88,7 @@ const Chat = () => {
                     direction: item.receiverId == Number(id) ? 'end' : 'start'
                 }}
             />)}
+            <div style={{ height: 40}} ref={messagesEndRef} />
         </Box>
         <Stack
             direction={'row'}

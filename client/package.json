@@ -35,6 +35,7 @@
     "@mui/lab": "^5.0.0-alpha.172",
     "@mui/material": "^5.16.4",
     "graphql": "^16.9.0",
+    "graphql-ws": "^5.16.0",
     "install": "^0.13.0",
     "npm": "^10.8.2",
     "react": "^18.3.1",
