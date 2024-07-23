@@ -6,3 +6,6 @@ export interface UserCardProps {
 export interface MessageProps {
     item: Message;
 }
+export interface AuthProps {
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+}
