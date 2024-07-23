@@ -1,6 +1,7 @@
-import { Box, Divider, Typography } from "@mui/material"
+import { Box, Divider, Stack, Typography } from "@mui/material"
 import UserCard from "./UserCard"
 import { User } from "../types"
+import { LoginOutlined } from "@mui/icons-material"
 
 const SideBar = () => {
 
@@ -24,7 +25,14 @@ const SideBar = () => {
         width={200}
         padding={1}
     >
-        <Typography variant="h6">Chat</Typography>
+        <Stack
+        direction={'row'}
+        alignItems={'center'}
+        justifyContent={'space-between'}
+        >
+            <Typography variant="h6">Chat</Typography>
+            <LoginOutlined />
+        </Stack>
         <Divider />
         {
             users.map(item => {

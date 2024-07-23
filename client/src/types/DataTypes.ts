@@ -5,3 +5,9 @@ export interface User {
     firstName: string;
     lastName: string;
 }
+export interface Message {
+    id: ID;
+    text: string;
+    date: string;
+    direction: 'start' | 'end'
+}
