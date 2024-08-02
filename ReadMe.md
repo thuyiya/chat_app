@@ -7,7 +7,7 @@ Chat App is a full-stack application with a backend powered by GraphQL and a fro
 ```
 project-root/
 │
-├── api/
+├── server/
 │ ├── .vscode/
 │ ├── assets/
 │ ├── config/
@@ -69,7 +69,7 @@ Make sure you have the following installed:
 1. Navigate to the `api` directory:
 
     ```bash
-    cd api
+    cd server
     ```
 
 2. Install dependencies:
